@@ -17,14 +17,24 @@ def updateSuccessors(successors, parent):
     return successorsUpdated
 
 
-def pushPQueue(successors, pqueue, heuristic=0):
+def pushPQueue(successors, pqueue, heuristics=None):
     for s in successors:
-        if heuristic != 0:
-            pqueue.push(s, s[2] + heuristic)
+        if heuristics:
+            distance = heuristics[s[0]]
+            pqueue.push(s, s[2] + distance)
         else:
             pqueue.push(s, s[2])
 
     return pqueue
+
+
+def getSuccessorsDistance(successors, heuristic, problem):
+    successorsDistance = {}
+
+    for s in successors:
+        successorsDistance[s[0]] = heuristic(s[0], problem)
+
+    return successorsDistance
 
 
 def filterVisitedSuccessors(successors, visited):
