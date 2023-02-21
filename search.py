@@ -203,8 +203,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             successors = funciones.filterVisitedSuccessors(successors, visited)
             successors = funciones.updateSuccessors(
                 successors, state)
+            successorsHeuristics = funciones.getSuccessorsDistance(
+                successors, heuristic, problem)
             pqueue = funciones.pushPQueue(
-                successors, pqueue, heuristic(state[0], problem))
+                successors, pqueue, successorsHeuristics)
 
     return path
 
