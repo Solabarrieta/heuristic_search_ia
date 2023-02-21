@@ -17,9 +17,13 @@ def updateSuccessors(successors, parent):
     return successorsUpdated
 
 
-def pushPQueue(successors, pqueue):
+def pushPQueue(successors, pqueue, heuristic=0):
     for s in successors:
-        pqueue.push(s, s[2])
+        if heuristic != 0:
+            pqueue.push(s, s[2] + heuristic)
+        else:
+            pqueue.push(s, s[2])
+
     return pqueue
 
 
