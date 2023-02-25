@@ -67,7 +67,7 @@ def depthFirstSearch(problem):
     stack = util.Stack()
     visited = []
     path = []
-
+    func = func.SearchFunctions()
     start = [problem.getStartState(), [], 0]
     stack.push(start)
 
@@ -83,16 +83,16 @@ def depthFirstSearch(problem):
             path = state[1]
             break
 
-        isVisited = funciones.isStateVisited(visited, state[0])
+        isVisited = func.isStateVisited(visited, state[0])
 
         if not isVisited:
 
             visited.append(state[0])
             path.append(state[1])
             successors = problem.getSuccessors(state[0])
-            successors = funciones.filterVisitedSuccessors(successors, visited)
-            successors = funciones.updateSuccessors(successors, state)
-            stack = funciones.pushSuccessors(successors, stack)
+            successors = func.filterVisitedSuccessors(successors, visited)
+            successors = func.updateSuccessors(successors, state)
+            stack = func.pushSuccessors(successors, stack)
 
     return path
 
@@ -100,7 +100,7 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     queue = util.Queue()
     visited = []
-
+    func = funciones.SearchFunctions(problem)
     start = [problem.getStartState(), [], 0]
     queue.push(start)
     path = []
@@ -118,15 +118,15 @@ def breadthFirstSearch(problem):
             path = state[1]
             break
 
-        isVisited = funciones.isStateVisited(visited, state[0])
+        isVisited = func.isStateVisited(visited, state[0])
 
         if not isVisited:
 
             visited.append(state[0])
             successors = problem.getSuccessors(state[0])
-            successors = funciones.filterVisitedSuccessors(successors, visited)
-            successors = funciones.updateSuccessors(successors, state)
-            queue = funciones.pushSuccessors(successors, queue)
+            successors = func.filterVisitedSuccessors(successors, visited)
+            successors = func.updateSuccessors(successors, state)
+            queue = func.pushSuccessors(successors, queue)
 
     return path
 
@@ -135,7 +135,7 @@ def uniformCostSearch(problem):
     pqueue = util.PriorityQueue()
     visited = []
     path = []
-
+    func = funciones.SearchFunctions(problem)
     start = [problem.getStartState(), [], 0]
     pqueue.push(start, start[2])
 
@@ -151,15 +151,15 @@ def uniformCostSearch(problem):
             path = state[1]
             break
 
-        isVisited = funciones.isStateVisited(visited, state[0])
+        isVisited = func.isStateVisited(visited, state[0])
 
         if not isVisited:
 
             visited.append(state[0])
             successors = problem.getSuccessors(state[0])
-            successors = funciones.filterVisitedSuccessors(successors, visited)
-            successors = funciones.updateSuccessors(successors, state)
-            pqueue = funciones.pushPQueue(successors, pqueue)
+            successors = func.filterVisitedSuccessors(successors, visited)
+            successors = func.updateSuccessors(successors, state)
+            pqueue = func.pushPQueue(successors, pqueue)
 
     return path
 
@@ -178,6 +178,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     pqueue = util.PriorityQueue()
     visited = []
     path = []
+    problemType = type(problem).__name__
+    if problemType == 'CornersProblem':
+        func = funciones.CornersFunctions(problem)
+    else:
+        func = funciones.SearchFunctions(problem)
 
     start = [problem.getStartState(), [], 0]
     pqueue.push(start, start[2])
@@ -194,18 +199,18 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             path = state[1]
             break
 
-        isVisited = funciones.isStateVisited(visited, state[0])
+        isVisited = func.isStateVisited(visited, state[0])
 
         if not isVisited:
 
             visited.append(state[0])
             successors = problem.getSuccessors(state[0])
-            successors = funciones.filterVisitedSuccessors(successors, visited)
-            successors = funciones.updateSuccessors(
+            successors = func.filterVisitedSuccessors(successors, visited)
+            successors = func.updateSuccessors(
                 successors, state)
-            successorsHeuristics = funciones.getSuccessorsDistance(
-                successors, heuristic, problem)
-            pqueue = funciones.pushPQueue(
+            successorsHeuristics = func.getSuccessorsDistance(
+                successors, heuristic)
+            pqueue = func.pushPQueue(
                 successors, pqueue, successorsHeuristics)
 
     return path
