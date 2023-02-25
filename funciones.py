@@ -29,3 +29,18 @@ def filterVisitedSuccessors(successors, visited):
         if s not in visited:
             filtered.append(s)
     return filtered
+
+
+def pushAStar(successors, pqueue, heuristics):
+    for s in successors:
+        distance = heuristics[s[0]]
+        pqueue.push(s, s[2] + distance)
+    return pqueue
+
+
+def getSuccessorsDistance(successors, heuristic, problem):
+    successorsDistance = {}
+    for s in successors:
+        # sposition, _ = s[0]
+        successorsDistance[s[0]] = heuristic(s[0], problem)
+    return successorsDistance
